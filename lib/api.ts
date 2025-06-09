@@ -34,6 +34,25 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
+export interface HealthResponse {
+  success: boolean;
+  message: string;
+  timestamp: number;
+  uptime: number;
+}
+
+export interface ModeChangeResponse {
+  success: boolean;
+  message: string;
+  data: {
+    currentMode: string;
+    modeStartTime: number;
+    lastActivity: number | null;
+    manualOverride: boolean;
+    overrideReason: string;
+  };
+}
+
 // Get current watcher status
 export async function getWatcherStatus(): Promise<WatcherStatus | null> {
   try {
@@ -55,7 +74,7 @@ export async function wakeUpWatcher(): Promise<boolean> {
         'Content-Type': 'application/json',
       },
     });
-    const result: ApiResponse<any> = await response.json();
+    const result: ApiResponse<ModeChangeResponse> = await response.json();
     return result.success;
   } catch (error) {
     console.error('Failed to wake up watcher:', error);
@@ -73,7 +92,7 @@ export async function setWatcherMode(mode: 'ACTIVE' | 'SLEEP' | 'HIBERNATE', rea
       },
       body: JSON.stringify({ mode, reason }),
     });
-    const result: ApiResponse<any> = await response.json();
+    const result: ApiResponse<ModeChangeResponse> = await response.json();
     return result.success;
   } catch (error) {
     console.error('Failed to set watcher mode:', error);
@@ -97,7 +116,7 @@ export async function getProcessedFolders(): Promise<ProcessedFolder[]> {
 export async function checkApiHealth(): Promise<boolean> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/health`);
-    const result: ApiResponse<any> = await response.json();
+    const result: ApiResponse<HealthResponse> = await response.json();
     return result.success;
   } catch (error) {
     console.error('API health check failed:', error);
