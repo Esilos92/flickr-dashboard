@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://10.108.0.2:3001';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://68.183.149.181:3001';
 
 export interface WatcherStatus {
   currentMode: 'ACTIVE' | 'SLEEP' | 'HIBERNATE';
