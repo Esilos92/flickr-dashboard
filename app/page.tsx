@@ -5,7 +5,7 @@ import {
   Power, 
   Activity, 
   Moon, 
-  Bear, 
+  Pause, 
   Upload, 
   FolderCheck, 
   Clock, 
@@ -42,7 +42,7 @@ const MODE_CONFIG = {
     emoji: '🐻', 
     color: 'bg-blue-500', 
     textColor: 'text-blue-600',
-    icon: Bear,
+    icon: Pause,
     interval: '7 days'
   }
 };
@@ -230,7 +230,7 @@ export default function Dashboard() {
               return (
                 <button
                   key={mode}
-                  onClick={() => handleModeChange(mode as any)}
+                  onClick={() => handleModeChange(mode as 'ACTIVE' | 'SLEEP' | 'HIBERNATE')}
                   disabled={isActive || isLoading}
                   className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                     isActive
