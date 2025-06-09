@@ -91,7 +91,7 @@ export default function Dashboard() {
     setActionLoading(null);
   };
 
-  const formatTime = (timestamp: number | null) => {
+  const formatTime = (timestamp: number | null | undefined) => {
     if (!timestamp) return 'Never';
     return new Date(timestamp).toLocaleString();
   };
