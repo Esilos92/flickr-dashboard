@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://tip-olympus-dress-management.trycloudflare.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://coupon-breathing-independently-swiss.trycloudflare.com';
 
 export interface WatcherStatus {
   currentMode: 'ACTIVE' | 'SLEEP' | 'HIBERNATE';
