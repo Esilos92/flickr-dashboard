@@ -281,7 +281,7 @@ export default function Dashboard() {
                       <div className="font-medium text-gray-100 font-mono">{folder.folderName}</div>
                       <div className="text-sm text-gray-400 font-mono">{folder.eventName}</div>
                     </div>
-                    <div className="text-emerald-400 font-mono">✅ ARCHIVED</div>
+                    <div className="text-emerald-400 font-mono">✅ UPLOADED</div>
                   </div>
                 ))}
               </div>
