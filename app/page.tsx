@@ -56,6 +56,20 @@ export default function Dashboard() {
   const [isOnline, setIsOnline] = useState(false);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [unprocessedCount, setUnprocessedCount] = useState(0);
+
+  const fetchUnprocessedCount = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://upload.galaxygirl.live'}/api/unprocessed-count`);
+      const result = await response.json();
+      if (result.success) {
+        setUnprocessedCount(result.data.unprocessedCount);
+      }
+    } catch (error) {
+      console.error('Failed to fetch unprocessed count:', error);
+      setUnprocessedCount(0);
+    }
+  };
 
   const fetchData = async () => {
     const [statusData, foldersData, healthCheck] = await Promise.all([
@@ -72,7 +86,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
+    fetchUnprocessedCount();
+    const interval = setInterval(() => {
+      fetchData();
+      fetchUnprocessedCount();
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
 
@@ -81,6 +99,7 @@ export default function Dashboard() {
     const success = await wakeUpWatcher();
     if (success) {
       await fetchData();
+      await fetchUnprocessedCount();
     }
     setActionLoading(null);
   };
@@ -90,6 +109,7 @@ export default function Dashboard() {
     const success = await setWatcherMode(mode, `Manual switch from dashboard`);
     if (success) {
       await fetchData();
+      await fetchUnprocessedCount();
     }
     setActionLoading(null);
   };
@@ -182,7 +202,7 @@ export default function Dashboard() {
               <FolderCheck className="w-5 h-5 text-emerald-400" />
             </div>
             <div className="text-3xl font-bold text-emerald-400 font-mono">
-              0
+              {unprocessedCount}
             </div>
             <div className="text-sm text-gray-400 font-mono">
               {status?.processedFoldersCount || 0} PROCESSED
