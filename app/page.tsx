@@ -185,7 +185,7 @@ export default function Dashboard() {
               {status?.processedFoldersCount || 0}
             </div>
             <div className="text-sm text-gray-400 font-mono">
-              {status?.stats.totalAlbumsCreated || 0} ALBUMS
+              {status?.stats.totalAlbumsCreated || 0} PROCESSED
             </div>
           </div>
 
