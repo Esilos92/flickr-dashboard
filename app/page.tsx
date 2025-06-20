@@ -182,10 +182,10 @@ export default function Dashboard() {
               <FolderCheck className="w-5 h-5 text-emerald-400" />
             </div>
             <div className="text-3xl font-bold text-emerald-400 font-mono">
-              {status?.processedFoldersCount || 0}
+              0
             </div>
             <div className="text-sm text-gray-400 font-mono">
-              {status?.stats.totalAlbumsCreated || 0} PROCESSED
+              {status?.processedFoldersCount || 0} PROCESSED
             </div>
           </div>
 
