@@ -29,6 +29,16 @@ export interface ProcessedFolder {
   folderName: string;
   eventName: string;
   processed: boolean;
+  /*
+    The uploader has never been documented as stamping a processed time,
+    and the old dashboard never read one. These are declared optional so
+    the browser can sort by a real timestamp if the API does send one;
+    when it sends none, FolderBrowser falls back to the order the API
+    returned the folders in.
+  */
+  processedAt?: number | string | null;
+  uploadedAt?: number | string | null;
+  timestamp?: number | string | null;
 }
 
 interface ApiEnvelope<T> {

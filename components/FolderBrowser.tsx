@@ -3,6 +3,19 @@
 import { useMemo, useState } from "react";
 import { ChevronRight, Search } from "lucide-react";
 import type { ProcessedFolder } from "@/lib/api";
+import { toDate } from "@/lib/format";
+
+/*
+  The API sends no upload time today, so "newest first" falls back to the
+  order the folders arrive in: the uploader appends each one as it
+  finishes, making array position a proxy for recency. If a real stamp
+  ever appears on the payload it wins, for both the rows inside a show
+  and the ordering of the shows themselves.
+*/
+function stampOf(f: ProcessedFolder): number | null {
+  const d = toDate(f.processedAt ?? f.uploadedAt ?? f.timestamp);
+  return d ? d.getTime() : null;
+}
 
 interface Props {
   folders: ProcessedFolder[] | null;
@@ -20,6 +33,13 @@ export default function FolderBrowser({ folders }: Props) {
   const groups = useMemo(() => {
     if (!folders) return null;
     const q = query.trim().toLowerCase();
+    const stamped = folders.some((f) => stampOf(f) !== null);
+    // Rank every folder once: a real stamp when the payload carries one,
+    // otherwise its position in the array. Higher means more recent.
+    const rank = new Map<ProcessedFolder, number>(
+      folders.map((f, i) => [f, stamped ? (stampOf(f) ?? -Infinity) : i]),
+    );
+
     const map = new Map<string, ProcessedFolder[]>();
     for (const f of folders) {
       if (
@@ -34,9 +54,18 @@ export default function FolderBrowser({ folders }: Props) {
       if (list) list.push(f);
       else map.set(key, [f]);
     }
+
+    const rankOf = (f: ProcessedFolder) => rank.get(f) ?? -Infinity;
+
     return [...map.entries()]
-      .map(([event, items]) => ({ event, items }))
-      .sort((a, b) => b.items.length - a.items.length);
+      .map(([event, items]) => ({
+        event,
+        items: [...items].sort((a, b) => rankOf(b) - rankOf(a)),
+      }))
+      .sort(
+        (a, b) =>
+          Math.max(...b.items.map(rankOf)) - Math.max(...a.items.map(rankOf)),
+      );
   }, [folders, query]);
 
   const total = folders?.length ?? 0;

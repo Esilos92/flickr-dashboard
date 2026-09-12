@@ -8,21 +8,25 @@ import { duration } from "@/lib/format";
 const MODES: {
   id: Mode;
   name: string;
+  cadence: string;
   confirm?: string;
 }[] = [
   {
     id: "ACTIVE",
     name: "Active",
+    cadence: "Checks every 2 minutes",
   },
   {
     id: "SLEEP",
     name: "Sleep",
+    cadence: "Checks once a day",
     confirm:
       "Sleep mode checks for new folders only once a day. Anything your team drops in could sit for up to 24 hours. Switch anyway?",
   },
   {
     id: "HIBERNATE",
     name: "Hibernate",
+    cadence: "Checks once a week",
     confirm:
       "Hibernate checks only once a week. Photos dropped in after this could sit for up to 7 days before uploading. Switch anyway?",
   },
@@ -109,12 +113,15 @@ export default function ModeControls({
                     />
                   ) : null}
                 </span>
+                <span className="mt-1 block font-mono text-[11px] text-ink-soft">
+                  {m.cadence}
+                </span>
               </button>
             );
           })}
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-5">
+        <div className="mt-5 flex flex-col items-center gap-2 border-t border-line pt-5 text-center">
           <button
             type="button"
             onClick={onWake}
