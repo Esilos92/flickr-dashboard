@@ -8,29 +8,21 @@ import { duration } from "@/lib/format";
 const MODES: {
   id: Mode;
   name: string;
-  cadence: string;
-  meaning: string;
   confirm?: string;
 }[] = [
   {
     id: "ACTIVE",
     name: "Active",
-    cadence: "Checks every 2 minutes",
-    meaning: "Normal setting during and just after a show.",
   },
   {
     id: "SLEEP",
     name: "Sleep",
-    cadence: "Checks once a day",
-    meaning: "Between shows. New folders can wait up to 24 hours.",
     confirm:
       "Sleep mode checks for new folders only once a day. Anything your team drops in could sit for up to 24 hours. Switch anyway?",
   },
   {
     id: "HIBERNATE",
     name: "Hibernate",
-    cadence: "Checks once a week",
-    meaning: "Long gaps. Nothing uploads until it wakes.",
     confirm:
       "Hibernate checks only once a week. Photos dropped in after this could sit for up to 7 days before uploading. Switch anyway?",
   },
@@ -117,12 +109,6 @@ export default function ModeControls({
                     />
                   ) : null}
                 </span>
-                <span className="mt-1 block font-mono text-[11px] text-ink-soft">
-                  {m.cadence}
-                </span>
-                <span className="mt-1.5 block text-xs leading-snug text-ink-faint">
-                  {m.meaning}
-                </span>
               </button>
             );
           })}
@@ -142,11 +128,11 @@ export default function ModeControls({
             )}
             Wake up and scan now
           </button>
-          <p className="text-xs text-ink-faint">
-            {current === "ACTIVE"
-              ? "Already active — it is scanning every 2 minutes."
-              : "Switches to active and keeps it there for 48 hours."}
-          </p>
+          {current === "ACTIVE" ? null : (
+            <p className="text-xs text-ink-faint">
+              Switches to active and keeps it there for 48 hours.
+            </p>
+          )}
         </div>
       </div>
 
