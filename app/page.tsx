@@ -65,7 +65,7 @@ export default function Dashboard() {
             <span className="text-source" aria-hidden>
               →
             </span>{" "}
-            <span className="sr-only">to</span> Flickr · GalaxyCon &amp; Animate!
+            <span className="sr-only">to</span> Flickr
           </p>
         </div>
 
