@@ -55,8 +55,9 @@ export default function StatusBanner({
   } else if (error || !status) {
     label = "No signal";
     headline = "Can't reach the uploader";
+    const reason = error ?? "No response from the server.";
     detail =
-      (error ?? "No response from the server.") +
+      (/[.!?]$/.test(reason) ? reason : `${reason}.`) +
       " The figures below are the last ones we saw, not current.";
   } else if (stale) {
     label = "Stale";
